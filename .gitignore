@@ -1,5 +1,4 @@
-src/main/webapp/resources/fotos/*.jpeg
-src/main/webapp/resources/fotos/*.jpg
+src/main/webapp/resources/fotos/
 
 target/
 pom.xml.tag
