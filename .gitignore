@@ -1,3 +1,6 @@
+src/main/webapp/resources/fotos/*.jpeg
+src/main/webapp/resources/fotos/*.jpg
+
 target/
 pom.xml.tag
 pom.xml.releaseBackup
