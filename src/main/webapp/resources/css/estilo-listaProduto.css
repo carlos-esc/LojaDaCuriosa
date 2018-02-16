@@ -1,0 +1,289 @@
+@charset "UTF-8";
+@font-face {
+      font-family: "Indie Flower";
+      src: url("../fonts/IndieFlower.ttf");
+}
+
+body {
+	background-color: white;
+}
+
+body a:link, a:visited{
+	text-decoration: none;
+}
+
+body .botao{
+	font-size: 8pt;
+	
+	text-transform: uppercase;	
+}
+
+div#interface{
+	width: 900px;
+	height: auto;
+	margin: auto;
+	padding: 0px;
+	box-shadow: 0px 0px 30px rgba(0,0,0,0.5);
+	background-color: AntiqueWhite;
+}
+/*Cabeçalho------------------------------------------------------------------*/
+header#cabecalho{
+	width: auto;
+	height: 60px;
+	margin: auto;
+	background-color: wheat;
+	border-bottom: 1px solid white;
+}
+
+nav#cabecalho-menu ul{
+	display: flex;
+	flex-flow: row nowrap;
+	align-items: center;
+	justify-content: space-around;
+	max-width: 800px;
+	padding: 0px 0px 0px 0px;
+	margin: 0 auto;
+	list-style: none;
+}
+
+nav#cabecalho-menu li{
+	font-size: 14px;
+	font-weight: bold;
+	font-variant: small-caps;
+	background-color: tan;
+	border: 1px solid white;
+	color: white;
+	flex: 1 auto;
+	padding: 7px 13px 7px 13px;
+	margin: 0px 0px 0px 0px;
+	text-align: center;
+	text-transform: uppercase;
+	transition: background-color 1s, color 1s, padding 0.5s, font-weight 1s;
+}
+
+nav#cabecalho-menu li:hover{
+	background-color: PeachPuff;
+	color: DarkGray;
+	padding: 7px 16px 7px 16px;
+	font-weight: bold;
+}
+
+nav#cabecalho-menu a:link, a:visited {
+	text-decoration: none;
+	color: SeaGreen;
+}
+
+nav#cabecalho-menu p{	
+	font-family: 'Indie Flower', cursive;
+	margin: 0px 40px 0px 0px;
+	color: white;
+	font-weight: bolder;
+	font-size: 30pt;
+}
+
+/*Apresentação------------------------------------------------------------------*/
+section#apresentacao{
+	display: block;
+	width: 100%;
+	min-height: 100px;
+	border-bottom: 1px solid white;
+	background-color: AntiqueWhite;
+}
+
+table#apresentacao-tabela{
+	width: 100%;
+	height: 100%;
+}
+
+table#apresentacao-tabela td.esquerdo{
+	width: 45%;
+}
+
+table#apresentacao-tabela td.esquerdo p.p01{
+	text-align: center;
+	font-size: 15pt;
+	color: SlateGrey;
+	padding: 0px 5px 0px 5px;
+	margin: 5px 0px 5px 0px;
+}
+
+table#apresentacao-tabela td.esquerdo p.p02{
+	text-align: justify;
+	text-indent: 20px;
+	color: SlateGrey;
+	padding: 0px 5px 0px 5px;
+}
+
+table#apresentacao-tabela td.centro{
+	width: 15%;
+	text-align: center;
+}
+
+table#apresentacao-tabela td.direito{
+	width: auto;
+	height: 100%;
+	display: flex;
+	flex-flow: row;
+	align-items: center;
+	justify-content: space-around;
+}
+
+table#apresentacao-tabela td.direito p.p01{
+	text-align: center;
+	font-size: 15pt;
+	color: SlateGrey;
+}
+
+table#apresentacao-tabela td.direito img{
+	width: 120px;
+	height: 120px;
+}
+
+/*Formulario Cadastro Produto------------------------------------------------------------------*/
+section#formularioCadastroProduto{
+	text-align: left;
+	color:SlateGrey;
+	font-size: 10pt;
+}
+
+section#formularioCadastroProduto .fieldSetInclusaoPesquisa{
+	font-size: 10pt;
+}
+
+section#formularioCadastroProduto .fieldSetInclusaoPesquisa .inputText{
+    display:flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+}
+
+section#formularioCadastroProduto .fieldSetInclusaoPesquisa .inputText .campoD{
+	float: left;
+}
+
+section#formularioCadastroProduto .fieldSetInclusaoPesquisa .botaoNovoPesquisa{
+	margin: 10px 0px 0px 0px;
+	text-align: center;
+}
+
+section#formularioCadastroProduto div.tabela {    
+    border-collapse: collapse;
+    margin: 5px;
+}
+
+section#formularioCadastroProduto tr {
+}
+
+section#formularioCadastroProduto .tabela table td {
+	padding : 5px 5px;
+	border: 1px solid white;
+}
+
+section#formularioCadastroProduto .atributo {
+	text-align: right;
+}
+
+section#formularioCadastroProduto .imput {
+	text-align: left;
+}
+
+section#formularioCadastroProduto textarea{
+  width: 100%;
+  height: 90px;
+  magin: 0px;
+  padding: 0px;
+}
+
+section#formularioCadastroProduto div.imagem, div.tabela {
+    float: left;
+    text-align: center;
+    margin: 0px 0px 10px 10px;
+}
+
+section#formularioCadastroProduto div.imagem input[type='file'] {
+  display: none;
+}
+
+section#formularioCadastroProduto div.imagem label {
+  width: 45%;
+  display: inline-block;
+  background-color: black;
+  color: white;
+  font-weight: bold;
+  margin: 5px 0px 5px 0px;
+  padding: 5px 0px;
+  cursor: pointer;
+}
+
+section#formularioCadastroProduto div.imagem label.labelAdd {
+  border-radius: 50px 0px 0px 0px;
+}
+
+section#formularioCadastroProduto div.imagem label.labelDel {
+  border-radius: 0px 50px 0px 0px;
+}
+
+section#formularioCadastroProduto div.imagem label:hover {
+  background-color: #2980b9;
+}
+
+section#formularioCadastroProduto div.imagem {
+	border-radius: 40px 40px 0px 0px;
+	border: 1px solid black;
+	width: 220px;
+	height: 260px;
+	margin: 10px 0px 0px 10px;
+}
+
+section#formularioCadastroProduto div.imagem img {
+	width: 95%;
+	height: 65%;
+}
+
+section#formularioCadastroProduto div.imagem p {
+	padding: 0px;
+	margin: 0px;
+}
+
+/*Tabela lista produtos------------------------------------------------------------------*/
+section#listaProdutos{
+	text-align: left;
+	width: 100%;
+	height: 100%;
+	color:SlateGrey;
+	font-size: 10pt;
+}
+
+section#listaProdutos table {
+    border: 1px solid white;
+    border-collapse: collapse;
+}
+
+section#listaProdutos tr {
+}
+
+section#listaProdutos table td, th {
+	padding : 5px 5px;
+	border: 1px solid red;
+}
+
+section#listaProdutos table .tdPreco {
+	text-align: right;
+}
+
+section#listaProdutos div{
+    float: left;
+    margin: 5px 5px 5px 5px;
+}
+
+/*Rodapé------------------------------------------------------------------*/
+footer#rodape{
+	clear: both;
+	background-color: wheat;
+	border-top: 1px solid white;
+}
+
+footer#rodape p{
+	margin: 0px;
+	padding: 5px 0px 5px 0px;
+	text-align: center;
+}

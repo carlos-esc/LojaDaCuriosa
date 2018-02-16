@@ -1,0 +1,217 @@
+@charset "UTF-8";
+@font-face {
+      font-family: "Indie Flower";
+      src: url("../fonts/IndieFlower.ttf");
+}
+
+body{
+	background-color: white;
+}
+
+div#interface{
+	width: 900px;
+	height: auto;
+	margin: auto;
+	padding: 0px;
+	box-shadow: 0px 0px 30px rgba(0,0,0,0.5);
+	background-color: AntiqueWhite;
+}
+/*Cabeçalho------------------------------------------------------------------*/
+header#cabecalho{
+	width: auto;
+	height: 60px;
+	margin: auto;
+	background-color: wheat;
+	border-bottom: 1px solid white;
+}
+
+nav#cabecalho-menu ul{
+	display: flex;
+	flex-flow: row nowrap;
+	align-items: center;
+	justify-content: space-around;
+	max-width: 800px;
+	padding: 0px 0px 0px 0px;
+	margin: 0 auto;
+	list-style: none;
+}
+
+nav#cabecalho-menu li{
+	font-size: 14px;
+	font-weight: bold;
+	font-variant: small-caps;
+	background-color: tan;
+	border: 1px solid white;
+	color: white;
+	flex: 1 auto;
+	padding: 7px 13px 7px 13px;
+	margin: 0px 0px 0px 0px;
+	text-align: center;
+	text-transform: uppercase;
+	transition: background-color 1s, color 1s, padding 0.5s, font-weight 1s;
+}
+
+nav#cabecalho-menu li:hover{
+	background-color: PeachPuff;
+	color: DarkGray;
+	padding: 7px 16px 7px 16px;
+	font-weight: bold;
+}
+
+nav#cabecalho-menu a:link, a:visited {
+	text-decoration: none;
+	color: SeaGreen;
+}
+
+nav#cabecalho-menu p{	
+	font-family: 'Indie Flower', cursive;
+	margin: 0px 40px 0px 0px;
+	color: white;
+	font-weight: bolder;
+	font-size: 30pt;
+}
+
+/*Apresentação------------------------------------------------------------------*/
+section#apresentacao{
+	display: block;
+	width: 100%;
+	min-height: 100px;
+	border-bottom: 1px solid white;
+	background-color: AntiqueWhite;
+}
+
+table#apresentacao-tabela{
+	width: 100%;
+	height: 100%;
+}
+
+table#apresentacao-tabela td.esquerdo{
+	width: 45%;
+	height: 100%;
+	margin: 0px;
+}
+
+table#apresentacao-tabela td.centro{
+	width: 15%;
+	height: 100%;
+	text-align: center;
+}
+
+table#apresentacao-tabela td.direito{
+	width: auto;
+	height: 100%;
+}
+
+table#apresentacao-tabela p.p01{
+	text-align: center;
+	font-size: 15pt;
+	color: SlateGrey;
+	padding: 0px 5px 0px 5px;
+	margin: 10px 0px 10px 0px;
+}
+
+table#apresentacao-tabela p.p02{
+	text-align: justify;
+	text-indent: 10px;
+	color: SlateGrey;
+	padding: 0px 5px 0px 5px;
+	margin: 5px 5px 0px 5px;
+}
+
+/*links------------------------------------------------------------------*/
+nav.nav-menu-categoria{
+	display: block;
+	width: auto;
+	height: 45px;
+	border-bottom: 1px solid white;
+}
+
+ul.principal {
+	display: flex;
+	flex-flow: row nowrap;
+	margin: 5px 0px 0px 0px;
+	/*justify-content: center;*/
+	/*align-content: center;*/
+}
+
+ul.principal li{
+	list-style: none;
+	font-size: 11pt;
+	color: SeaGreen;
+	text-transform: uppercase;
+	padding: 5px 5px 5px 5px;
+	font-weight: bold;
+	border-radius: 10px 0px 0px 10px;
+}
+
+ul.secundaria{
+	display: none;
+	flex-flow: row nowrap;
+	margin: 0px;
+}
+
+ul.secundaria li{
+	list-style: none;
+	font-size: 11pt;
+	color: SeaGreen;
+	text-transform: uppercase;
+	background-color: PeachPuff;
+	margin: -7px 0px 0px 0px;
+	padding: 5px 5px 5px 5px;
+	
+}
+
+ul.secundaria li:first-child{
+	border-radius: 10px 0px 0px 10px;
+	padding-left: 10px;
+}
+
+ul.secundaria li:last-child{
+	border-radius: 0px 10px 10px 0px;
+	padding-right: 10px;
+}
+
+
+nav.nav-menu-categoria a{
+	transition: text-shadow 1s;
+}
+
+nav.nav-menu-categoria a:link, a:visited {
+	text-decoration: none;
+	color: SeaGreen;
+}
+
+nav.nav-menu-categoria a:hover{
+	text-shadow: 0px 0px 20px red;
+}
+
+/*Paginas------------------------------------------------------------------*/
+section#paginas{
+	text-align: center;
+	width: 100%;
+	min-height: 150px;
+	border-bottom: 1px solid white;
+}
+
+iframe#iframe{
+	width: 99%;
+	min-height: 150px;
+	border: none;
+	overflow: hidden;
+}
+
+iframe#iframe::-webkit-scrollbar{
+	display: none;
+}
+
+/*Rodapé------------------------------------------------------------------*/
+footer#rodape{
+	clear: both;
+	background-color: wheat;
+}
+
+footer#rodape p{
+	margin: 0px;
+	padding: 5px 0px 5px 0px;
+	text-align: center;
+}

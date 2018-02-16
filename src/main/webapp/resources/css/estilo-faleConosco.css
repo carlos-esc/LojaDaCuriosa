@@ -1,0 +1,196 @@
+@charset "UTF-8";
+@font-face {
+      font-family: "Indie Flower";
+      src: url("../fonts/IndieFlower.ttf");
+}
+
+body{
+	background-color: white;
+}
+
+div#interface{
+	width: 900px;
+	height: auto;
+	margin: auto;
+	padding: 0px;
+	box-shadow: 0px 0px 30px rgba(0,0,0,0.5);
+	background-color: AntiqueWhite;
+}
+/*Cabeçalho------------------------------------------------------------------*/
+header#cabecalho{
+	width: auto;
+	height: 60px;
+	margin: auto;
+	background-color: wheat;
+	border-bottom: 1px solid white;
+}
+
+nav#cabecalho-menu ul{
+	display: flex;
+	flex-flow: row nowrap;
+	align-items: center;
+	justify-content: space-around;
+	max-width: 800px;
+	padding: 0px 0px 0px 0px;
+	margin: 0 auto;
+	list-style: none;
+}
+
+nav#cabecalho-menu li{
+	font-size: 14px;
+	font-weight: bold;
+	font-variant: small-caps;
+	background-color: tan;
+	border: 1px solid white;
+	color: white;
+	flex: 1 auto;
+	padding: 7px 13px 7px 13px;
+	margin: 0px 0px 0px 0px;
+	text-align: center;
+	text-transform: uppercase;
+	transition: background-color 1s, color 1s, padding 0.5s, font-weight 1s;
+}
+
+nav#cabecalho-menu li:hover{
+	background-color: PeachPuff;
+	color: DarkGray;
+	padding: 7px 16px 7px 16px;
+	font-weight: bold;
+}
+
+nav#cabecalho-menu a:link, a:visited {
+	text-decoration: none;
+	color: SeaGreen;
+}
+
+nav#cabecalho-menu p{	
+	font-family: 'Indie Flower', cursive;
+	margin: 0px 40px 0px 0px;
+	color: white;
+	font-weight: bolder;
+	font-size: 30pt;
+}
+
+/*Apresentação------------------------------------------------------------------*/
+section#apresentacao{
+	display: block;
+	width: 100%;
+	min-height: 100px;
+	border-bottom: 1px solid white;
+	background-color: AntiqueWhite;
+}
+
+table#apresentacao-tabela{
+	width: 100%;
+	height: 100%;
+}
+
+table#apresentacao-tabela td.esquerdo{
+	width: 45%;
+}
+
+table#apresentacao-tabela td.esquerdo p.p01{
+	text-align: center;
+	font-size: 15pt;
+	color: SlateGrey;
+	padding: 0px 10px 0px 10px;
+	margin: 5px 0px 5px 0px;
+}
+
+table#apresentacao-tabela td.esquerdo p.p02{
+	text-align: justify;
+	text-indent: 20px;
+	color: SlateGrey;
+	padding: 0px 10px 0px 10px;
+}
+
+table#apresentacao-tabela td.centro{
+	width: 15%;
+	text-align: center;
+}
+
+table#apresentacao-tabela td.direito{
+	width: auto;
+	height: 100%;
+	display: flex;
+	flex-flow: row;
+	align-items: center;
+	justify-content: space-around;
+}
+
+table#apresentacao-tabela td.direito p.p01{
+	text-align: center;
+	font-size: 15pt;
+	color: SlateGrey;
+}
+
+table#apresentacao-tabela td.direito img{
+	width: 120px;
+	height: 120px;
+}
+
+/*Informação------------------------------------------------------------------*/
+section#informacao {
+	width: 100%;
+	height: 100%;
+	border-bottom: 1px solid white;
+	margin: 0px;
+	text-align: left;
+}
+
+section#informacao p{
+	color: SlateGrey;
+	margin: 10px 0px 0px 10px;
+	font-size: 13pt;
+}
+
+/*Contato------------------------------------------------------------------*/
+section#formularioFaleConosco{
+	text-align: left;
+	width: 100%;
+	min-height: 150px;
+	border-bottom: 1px solid white;
+	color:SlateGrey;
+}
+
+section#formularioFaleConosco div{
+	background-color: wheat;	
+	border-radius: 20px 20px 20px 20px;
+	margin: 10px;
+}
+
+section#formularioFaleConosco div p{
+	line-height:40px; 
+	text-align:center; 
+}
+
+section#formularioFaleConosco #fieldSetForm{
+	margin: 10px;
+	border: none;
+}
+
+section#formularioFaleConosco form{
+	margin: 10px;
+}
+
+section#formularioFaleConosco input[type=button]{
+	font-family: 'Indie Flower', cursive;
+	background-color: tan;
+	color: white;
+	font-size: 18pt;
+	width: 100px;
+	text-transform: uppercase;
+	font-weight: bold;
+}
+
+/*Rodapé------------------------------------------------------------------*/
+footer#rodape{
+	clear: both;
+	background-color: wheat;
+}
+
+footer#rodape p{
+	margin: 0px;
+	padding: 5px 0px 5px 0px;
+	text-align: center;
+}

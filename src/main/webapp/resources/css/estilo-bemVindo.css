@@ -1,0 +1,293 @@
+@charset "UTF-8";
+@font-face {
+      font-family: "Indie Flower";
+      src: url("../fonts/IndieFlower.ttf");
+}
+
+:root {
+  --corFundo01: AntiqueWhite;
+  --corFundo02: wheat;
+  --corFundo03: tan;
+  
+  --corFonte01: white;
+  --corFonte02: rgb(105,105,105);
+  
+  --corLinha01: rgb(255,218,185);
+}
+
+body{
+	background-color: white;
+}
+
+body a:link, a:visited {
+	text-decoration: none;
+	color: black;
+	font-weight: bold;
+}
+
+div#interface{
+	width: 900px;
+	height: auto;
+	margin: auto;
+	padding: 0px;
+	box-shadow: 0px 0px 30px rgba(0,0,0,0.5);
+	background-color: var(--corFundo01);
+	color: var(--corFonte01);
+}
+/*Cabeçalho------------------------------------------------------------------*/
+header#cabecalho{
+	width: auto;
+	height: 60px;
+	margin: auto;
+	background-color: var(--corFundo02);
+}
+
+nav#cabecalho-menu ul{
+	display: flex;
+	flex-flow: row nowrap;
+	align-items: center;
+	justify-content: space-around;
+	max-width: 800px;
+	padding: 0px 0px 0px 0px;
+	margin: 0 auto;
+	list-style: none;
+}
+
+nav#cabecalho-menu li{
+	font-size: 14px;
+	font-weight: bold;
+	font-variant: small-caps;
+	background-color: var(--corFundo03);
+	border: 2px solid rgb(255,250,240);
+	flex: 1 auto;
+	padding: 7px 13px 7px 13px;
+	margin: 0px 0px 0px 0px;
+	text-align: center;
+	text-transform: uppercase;
+	transition: background-color 1s, color 1s, padding 0.5s, font-weight 1s;
+	color: var(--corFonte01);
+}
+
+nav#cabecalho-menu li:hover{
+	background-color: var(--corFundo01);
+	color: rgb(105,105,105);
+	padding: 7px 16px 7px 16px;
+	font-weight: bold;
+}
+
+nav#cabecalho-menu p{	
+	font-family: 'Indie Flower', cursive;
+	margin: 0px 40px 0px 0px;
+	font-weight: bolder;
+	font-size: 30pt;
+}
+
+/*Apresentação------------------------------------------------------------------*/
+section#apresentacao{
+	display: block;
+	width: 100%;
+	min-height: 100px;
+	color: var(--corFonte02);
+}
+
+table#apresentacao-tabela{
+	width: 100%;
+	height: 100%;
+}
+
+table#apresentacao-tabela td.esquerdo{
+	width: 45%;
+}
+
+table#apresentacao-tabela td.esquerdo p.p01{
+	text-align: center;
+	font-size: 15pt;
+	padding: 0px 10px 0px 10px;
+	margin: 5px 0px 5px 0px;
+}
+
+table#apresentacao-tabela td.esquerdo p.p02{
+	text-align: justify;
+	text-indent: 20px;
+	padding: 0px 10px 0px 10px;
+}
+
+table#apresentacao-tabela td.centro{
+	width: 15%;
+	text-align: center;
+}
+
+table#apresentacao-tabela td.direito{
+	width: auto;
+	height: 100%;
+	display: flex;
+	flex-flow: row;
+	align-items: center;
+	justify-content: space-around;
+}
+
+table#apresentacao-tabela td.direito img{
+	width: 120px;
+	height: 120px;
+}
+
+/*Informação------------------------------------------------------------------*/
+section#informacao{
+	display: flex;
+	flex-flow: row nowrap;
+	align-items: center;
+	justify-content: space-around;
+	width: 100%;
+	color: var(--corFonte02);
+}
+
+article#esquerdo{
+	width: 25%;
+	background-color: var(--corFundo02);
+	margin-left: 10px;
+	margin-right: 10px;
+	min-height: 200px;
+} 
+
+article#esquerdo span{
+	display: flex;
+  	justify-content: right;
+	padding: 10px 10px 0px 0px;
+	text-transform: uppercase;
+	font-size: 25px;
+}
+
+article#direito {
+	display: block;
+	float: left;
+	width: 75%;
+	min-height: 200px;
+	margin-right: 10px;
+	background-color: var(--corFundo02);
+	font-size: 14px;
+}
+
+article#direito p{
+	text-align: justify;
+	padding-right: 10px;
+	padding-left: 10px;
+}
+
+article#direito p.titulo{
+	font-size: 18px;
+	text-align: center;
+}
+
+/*info lista de produto------------------------------------------------------------------*/
+section#infoListaProduto{
+	font-size: 10pt;
+	width: 100%;
+	color: var(--corFonte02);
+}
+
+section#infoListaProduto div{
+	margin: 0px 10px 0px 10px;
+}
+
+section#infoListaProduto div h3{
+	text-align: center;
+}
+
+section#infoListaProduto div p{
+	text-align: center;
+}
+
+
+/*lista produto------------------------------------------------------------------*/
+section#listaProduto{
+	text-align: center;
+	width: 100%;
+	display: flex;
+	flex-flow: row wrap;
+	align-items: center;
+	justify-content: space-around;
+	color: var(--corFonte02);
+}
+
+section#listaProduto div.produto{
+	display: block;
+	float: left;
+	width: 280px;
+    height: 360px;
+    border: 1px solid var(--corLinha01);
+    margin: 10px 0px 10px 0px;
+}
+
+section#listaProduto div.produto .nome{
+	color: RoyalBlue;
+}
+
+section#listaProduto div.produto .categoria{
+	color: ciano;
+}
+
+section#listaProduto div.produto .preco{
+	color: LimeGreen;
+	font-weight: bold;
+}
+
+section#listaProduto table{
+    border-collapse: collapse;
+    font-size: 13px;
+	padding: 7px 13px 7px 13px;
+	margin: 0px 0px 0px 0px;
+	text-align: center;
+	width: 100%;
+    height: 100%;
+}
+
+section#listaProduto div.produto table tr.principalImagem{
+	width: 280px;
+    height: 230px;
+    border-bottom: 1px solid var(--corLinha01);
+    background-color: var(--corFundo02);
+}
+
+section#listaProduto div.produto table tr.principalImagem td{
+	width: 100%;
+    height: 230px;
+}
+
+section#listaProduto div.produto table tr.principalImagem td img{
+	max-width:275px;
+    max-height:225px;
+    width: auto;
+    height: auto;
+}
+
+section#listaProduto div.produto table tr.miniImagem{
+	width: 280px;
+    height: 40px;
+    border-bottom: 1px solid var(--corLinha01);
+    background-color: var(--corFundo02);
+}
+
+section#listaProduto div.produto table tr.miniImagem td{
+    height: 10px;
+}
+
+section#listaProduto div.produto table tr.miniImagem td img{
+    max-width:40px;
+    max-height:40px;
+    width: auto;
+    height: auto;
+    cursor:pointer;
+}
+
+/*Rodapé------------------------------------------------------------------*/
+footer#rodape{
+	clear: both;
+	background-color: var(--corFundo02);
+	color: var(--corFonte02);
+}
+
+footer#rodape p{
+	margin: 0px;
+	padding: 5px 0px 5px 0px;
+	text-align: center;
+}
