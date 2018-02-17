@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -92,7 +91,13 @@ public class ProdutoController {
 	
 	Produto atualiza(Produto produto, String listaFoto, MultipartFile[] listaUpload) throws IOException {		
 		
-		String diretorioDestino = "/home/caldas/eclipse-workspace/lojadacuriosa/src/main/webapp/resources/fotos/";
+		String diretorioDestino = System.getProperty("user.home") + "/eclipse-workspace/lojadacuriosa/src/main/webapp/resources/fotos/";
+		File dir = new File(diretorioDestino);  
+		if (dir.mkdir()) {
+			System.out.println("Criado--->");
+		} else {
+			System.out.println("Não foi criado<---");
+		}
 		
 		if (produto.getId() != 0) {
 			
@@ -114,7 +119,7 @@ public class ProdutoController {
 
 					// A File object to represent the filename
 					File f = new File(fileName);
-
+					
 					// Make sure the file or directory exists
 					if (!f.exists()) throw new IllegalArgumentException("Delete: no such file or directory:" + fileName);
 

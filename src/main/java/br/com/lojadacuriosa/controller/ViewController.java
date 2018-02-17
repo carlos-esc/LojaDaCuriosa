@@ -1,5 +1,6 @@
 package br.com.lojadacuriosa.controller;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,7 @@ public class ViewController {
 	private ProdutoService produtoService; 
 	
 	@GetMapping(value = "/bemVindo")
-	public String bemVindo(Model model) {
+	public String bemVindo(Model model) throws IOException {
 		List<Produto> produtos = produtoService.getTodosProdutos();
 		model.addAttribute("produtos", produtos);
 		return "bemVindo";
