@@ -15,7 +15,6 @@
 		
 		<script type="text/javascript">
 			var fotoNova = [];
-			var resultadoFinal;
 			var novoId = 0;
   			var cont = 0;
   			
@@ -78,41 +77,52 @@
   				}
   			}
   			
+  			function novoProduto(){
+  				produtoInclusaoAlteracao();
+  				$("#botaoAdicionarAtualizar").val("Adicionar Produto");
+  				fotoNovaClear();
+  			}
+  			
   			function editarProduto(id){
   				$.ajax({
-				    url: "/lojadacuriosa/produto/" + id,
+				    url: "/lojadacuriosa/produtoNew/" + id,
 				    method: 'GET',
 				    success: function (response01, response02, response03) {
-				       	alert(JSON.stringify(response01));
-				       	alert(JSON.stringify(response02));
-				       	alert(JSON.stringify(response03));
+				    	alert(JSON.stringify(response01[1]));
+				       	//alert(JSON.stringify(response02));
+				       	//alert(JSON.stringify(response03));
+				       	produtoInclusaoAlteracao();
+				       	fotoNovaClear();
+				       	$("#botaoAdicionarAtualizar").val("Atualizar produto");
+				       	$("#nome").val(response01[1]["nome"]);
+				       	$("#preco").val(formataPreco(response01[1]["preco"]));
+				       	var option = "";
+				       	$.each(response01[0], function (i, obj){
+				       		option += "<option value='"+obj.id+"'>"+obj.nome+"</option>";
+				       	})
+				       	$("#categoriaPrincipal").html("<option value='"+response01[1]["categoriaPrincipal"]["id"]+"'>"+response01[1]["categoriaPrincipal"]["nome"]+" (ATUAL)"+"</option>" + option);
+				       	$("#categoriaSecundaria").html("<option value='"+response01[1]["categoriaSecundaria"]["id"]+"'>"+response01[1]["categoriaSecundaria"]["nome"]+" (ATUAL)"+"</option>" + option);
+				       	$.each(response01[1]["fotos"], function (i, obj){
+				       		incluirFoto(obj.nome);
+				       	})
 				    },
 				        error: function (erroResponse01, erroResponse02, erroResponse03) {
 				    }
 				});
   			}
   			
-  			function del(id){
+  			function deletarProduto(id){
   				$.ajax({
   			        url: "/lojadacuriosa/produto/" + id,
   			        method: 'DELETE',
-  			        success: function (data) {                       
-  			            alert("Deletado com sucesso: Id(" + id + ") -- data:" + data);
-  			            $("#produtoId_" + id).remove();
+  			        success: function (data01, data02, data03) {                       
+  			        	$("#produtoId_" + id).remove();
+  			        	alert("Deletado com sucesso: Id(" + id + ")");
   			        },
   			        error: function (xhr, status, error) {
   			        	alert("erro 1:" + xhr + ", 2:" + status + ", 3:" + error );
   			        }
   			    });	
-  			}
-  			
-  			function add(){
-  				document.getElementById("botaoAdicionarAtualizar").value = "Adicionar produto";
-  			}
-  			
-  			function update(){
-  				document.getElementById("botaoAdicionarAtualizar").value = "Atualizar produto";
-  				produtoInclusaoAlteracao();
   			}
   			
   			function mostraFoto(idFile){  				
@@ -159,29 +169,40 @@
   				$("#divId_" + id).remove();
   				fotoNova[id] = null;
   			}
-  		
-  			$( "#formCadastro" ).submit(function( event ) {
-  			  alert( "Handler for .submit() called." );
-  			  event.preventDefault();
-  			});
+  			
+  			function fotoNovaClear(){
+  				$.each( fotoNova, function( key, value ) {
+  					$("#divId_" + key).remove();
+  				});
+  				cont = 0;
+  				novoId= 0;
+  				while(fotoNova.length > 0){
+  					fotoNova.pop();
+  				}
+  			}
+  			
+  			function produtoInclusaoAlteracao(){
+  				$("#fieldSetFormCadastro").prop("disabled", false);
+  				$("#fieldSetFormCadastro").css("display", "");
+  				
+  				$("#fieldSetInclusaoPesquisa").prop("disabled", true);
+  				$("#fieldSetInclusaoPesquisa").css("display", "none");
+  				
+  				$("#fieldSetListaProduto").prop("disabled", true);
+  				
+  				$("#formCadastro")[0].reset();
+  			}
   			
   			function cancelar(){
-  				var resultado = "";
-				for(var i = 0; i < fotoNova.length; i++) {
-					resultado += "Id: " + i + "\nNome: " + fotoNova[i] + "\n";
-				}
-				alert(resultado);
+  				$("#fieldSetFormCadastro").prop("disabled", true);
+  				$("#fieldSetFormCadastro").css("display", "none");
   				
-  				$.ajax({
-				   	method: 'GET',  	
-				    url: "/lojadacuriosa/produto",
-				    success: function (response) {
-				       	$(window.document.location).attr("href","/lojadacuriosa/produto");
-				    },
-				    error: function (exr, sender) {
-				    	alert("Erro ao carregar pagina");
-				    }
-				});
+  				$("#fieldSetInclusaoPesquisa").prop("disabled", false);
+  				$("#fieldSetInclusaoPesquisa").css("display", "");
+  				
+  				$("#fieldSetListaProduto").prop("disabled", false);
+  				
+  				$("#formCadastro")[0].reset();
   			}
 		
 			function mascaraMoeda(input) {
@@ -196,43 +217,23 @@
   
   			function formataPreco(preco) {	
   			    if (preco <= 0){
-  			    	document.getElementById("preco").value = "";
+  			    	return "";
   			    } else {
-  	  			  	document.getElementById("preco").value = formataPreco2(preco);	
+  			    	var strPreco = preco.toString();
+  				    if (strPreco.indexOf(".") >= 0){
+  				    	if (strPreco.split(".")[1].length == 1) {
+  				    		strPreco += "0";
+  				    	}
+  				    } else {
+  				    	strPreco += "00";
+  				    }
+  				    strPreco = strPreco.replace(/\D/g,"");
+  				    strPreco = strPreco.replace(/(\d)(\d{8})$/,"$1.$2");
+  		  			strPreco = strPreco.replace(/(\d)(\d{5})$/,"$1.$2");
+  		  			strPreco = strPreco.replace(/(\d)(\d{2})$/,"$1,$2");
+  			    	return strPreco;	
   			    }
-  			}
-  			
-  			function formataPreco2(preco){
-  				var strPreco = preco.toString();
-			    if (strPreco.indexOf(".") >= 0){
-			    	if (strPreco.split(".")[1].length == 1) {
-			    		strPreco += "0";
-			    	}
-			    } else {
-			    	strPreco += "00";
-			    }
-			    strPreco = strPreco.replace(/\D/g,"");
-			    strPreco = strPreco.replace(/(\d)(\d{8})$/,"$1.$2");
-	  			strPreco = strPreco.replace(/(\d)(\d{5})$/,"$1.$2");
-	  			strPreco = strPreco.replace(/(\d)(\d{2})$/,"$1,$2");
-	  			return strPreco;
-  			}
-  			
-  			function classPreco(preco){
-  				$(".tdPreco:last").text(formataPreco2(preco));
-  			}
-  			
-  			function produtoInclusaoAlteracao(){
-  				$("#fieldSetFormCadastro").prop("disabled", false);
-  				$("#fieldSetFormCadastro").css("display", "");
-  				
-  				$("#fieldSetInclusaoPesquisa").prop("disabled", true);
-  				$("#fieldSetInclusaoPesquisa").css("display", "none");
-  				
-  				$("#fieldSetListaProduto").prop("disabled", true);
-  			}
-  				
-  		 		
+  			}	
 		</script>
 		
 	</head>
@@ -289,13 +290,12 @@
 					
 					<div class="botaoNovoPesquisa">
 						<input type="button" class="botao" value="Pesquisa Produto" Onclick="" id="pesquisaProduto" />
-						<input type="button" class="botao" value="Novo Produto" Onclick="produtoInclusaoAlteracao();" id="novoProduto" />
+						<input type="button" class="botao" value="Novo Produto" Onclick="novoProduto();" id="novoProduto" />
 					</div>
 				</fieldset>
 				
-				<fieldset id="fieldSetFormCadastro"  style="display:none;" disabled>
-				<form:form id="formCadastro" modelAttribute="produto" action="" enctype="multipart/form-data" name="formCadastro" >
-					<form:hidden path="id" />
+				<fieldset id="fieldSetFormCadastro" style="display:none;" disabled>
+				<form id="formCadastro" enctype="multipart/form-data">
           			<div class="tabela">
 						<table>
 							<tr>
@@ -303,36 +303,30 @@
 							</tr>
 							<tr>
 								<td class="atributo">Nome</td>
-								<td class="input"><form:input path="nome" type="text" name="nome"></form:input></td>
+								<td class="input"><input id="nome" type="text"></input></td>
 							</tr>
 							<tr>
 								<td class="atributo">Preço R$</td>
 								<td class="input">
-									<form:input onKeyUp="mascaraMoeda(this)" path="preco" type="text" name="preco" id="preco" ></form:input>
+									<input id="preco" onKeyUp="mascaraMoeda(this)" type="text"></input>
 								</td>
 							</tr>	
 						  	
 							<tr>
 								<td class="atributo">Categoria principal</td>
 								<td>					
-	               					<form:select path="categoriaPrincipal.id" name="categoriaPrincipal.id">       
-	                        			<form:option value="0">Todas</form:option>
-	                        			<c:forEach items="${categorias}" var="categoria">
-    	                    				<form:option  class="input" value="${categoria.id}">${categoria.nome}</form:option>
-        	                			</c:forEach>
-            	        			</form:select>
+	               					<select id="categoriaPrincipal">       
+    	                    			<option  id="categoriaPrincipalOption" class="input"></option>
+            	        			</select>
             	        		</td>
 							</tr>
 				 	
 							<tr>
 								<td class="atributo">Categoria secundaria</td>
 								<td>					
-	               					<form:select path="categoriaSecundaria.id" name="categoriaSecundaria.id">
-	                        			<form:option value="0">Todas</form:option>
-	                        			<c:forEach items="${categorias}" var="categoria">
-    	                    				<form:option class="input" value="${categoria.id}">${categoria.nome}</form:option>
-        	                			</c:forEach>
-            	        			</form:select>
+	               					<select id="categoriaSecundaria">
+    	                    			<option id="categoriaSecundariaOption" class="input"></option>
+            	        			</select>
             	        		</td>
 							</tr>
 				
@@ -340,7 +334,7 @@
 								<td colspan="2">
 									Descrição (Máximo 200 letras)
 									<br />
-									<form:textarea path="descricao" class="input" name="descricao" maxlength="200" ></form:textarea>
+									<textarea id="descricao" class="input" maxlength="200" ></textarea>
 								</td>
 							</tr>
 							 
@@ -353,7 +347,7 @@
 							
 							<tr>
 								<td colspan="2">
-									<input type="submit" class="botao" value="pos" Onclick="postPut(${produto.id});" id="botaoAdicionarAtualizar" />
+									<input type="submit" class="botao" value="" Onclick="postPut(${produto.id});" id="botaoAdicionarAtualizar" />
 									<input type="button" class="botao" value="Cancelar" Onclick="cancelar();" id="botaoCancelar" /> 	
 								</td>
 							</tr>
@@ -367,7 +361,7 @@
 						<img class="imgId" />
 						<input type="file" class="fileId" onChange="mostraFoto(this);"/>
 					</div>		
-				</form:form>
+				</form>
 				</fieldset>		
 			</section>
 			
@@ -396,7 +390,7 @@
     	        			
     	        			<td class="tdPreco">
     	        				<script>
-    	        					classPreco(${produto.preco});
+    	        	  				$(".tdPreco:last").text(formataPreco(${produto.preco}));
     	        				</script>
     	        			</td>
 							
@@ -426,9 +420,8 @@
     	        				</c:forEach>
 	    	        		</td>    	        	
 	    	        		<td>
-	    	        			<input type="button" value="Editar sem carregar" class="botao" onClick="editarProduto(${produto.id});" />
-	    	        			<a href="produto/${produto.id}"><button class="botao" >&nbsp;&nbsp;Editar&nbsp;</button></a>
-	    	        			<input type="button" value="Deletar" class="botao" onClick="del(${produto.id});" />
+	    	        			<input type="button" value="Editar" class="botao" onClick="editarProduto(${produto.id});" />
+	    	        			<input type="button" value="Deletar" class="botao" onClick="deletarProduto(${produto.id});" />
 	    	        		</td>
 						</tr>
 					</c:forEach>
@@ -443,27 +436,5 @@
 			<a href="mailto:carlos.esc@live.com">carlos.esc@live.com</a></p>
 			</footer>
 		</div>
-		
-		<c:choose>
-    		<c:when test="${produto.id == 0}">
-       			<script>
-					add();
-				</script>	
-    		</c:when>
-    		<c:otherwise>
-        		<script>
-					update();
-				</script>
-				<c:forEach items="${produto.fotos}" var="foto">
-	    	    	<script>
-    	    			incluirFoto("${foto.nome}");
-	    	    	</script>
-    	        </c:forEach>
-    		</c:otherwise>
-		</c:choose>
-		
-		<script type="text/javascript" LANGUAGE="JavaScript">
-			formataPreco(${produto.preco});
-		</script>
 	</body>
 </html>

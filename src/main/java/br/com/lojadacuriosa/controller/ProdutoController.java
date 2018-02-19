@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -48,12 +49,39 @@ public class ProdutoController {
 	}
 	
 	@GetMapping(value = "/produto/{id}")
-	public String updateProduto(@PathVariable int id,Model model) {
-		List<Categoria> categorias = categoriaService.getTodasCategorias();
-		model.addAttribute("categorias", categorias);
+	public @ResponseBody List<Object> updateProduto(@PathVariable int id,Model model) throws JsonProcessingException {
+		model.addAttribute("categorias", this.categoriaService.getTodasCategorias());
 		model.addAttribute("produto", this.produtoService.getProduto(id));
 		model.addAttribute("produtos", this.produtoService.getTodosProdutos());
-	    return "listaProduto";
+		
+		List<Object> resultado = new ArrayList<>();
+		resultado.add(this.categoriaService.getTodasCategorias());
+		resultado.add(this.produtoService.getProduto(id));
+		resultado.add(this.produtoService.getTodosProdutos());
+		ObjectMapper mapper = new ObjectMapper();
+		System.out.println(mapper.writeValueAsString(resultado));
+	    return resultado;
+	}
+	
+	@GetMapping(value = "/produtoNew")
+	public String getProdutosNew(Model model) {
+		List<Categoria> categorias = categoriaService.getTodasCategorias();
+		List<Produto> produtos = produtoService.getTodosProdutos();
+		model.addAttribute("produto", new Produto());
+		model.addAttribute("categorias", categorias);
+		model.addAttribute("produtos", produtos);
+		return "listaProdutoNew";
+	}
+	
+	@GetMapping(value = "/produtoNew/{id}")
+	public @ResponseBody List<Object> updateProdutoNew(@PathVariable int id) throws JsonProcessingException {
+		List<Object> resultado = new ArrayList<>();
+		resultado.add(this.categoriaService.getTodasCategorias());
+		resultado.add(this.produtoService.getProduto(id));
+		resultado.add(this.produtoService.getTodosProdutos());
+		ObjectMapper mapper = new ObjectMapper();
+		System.out.println(mapper.writeValueAsString(resultado));
+	    return resultado;
 	}
 	
 	@PostMapping(value = "/produto")
