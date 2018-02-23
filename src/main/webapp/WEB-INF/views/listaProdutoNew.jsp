@@ -14,19 +14,19 @@
 		<link rel="stylesheet" type="text/css" href="/lojadacuriosa/resources/css/estilo-listaProduto.css"/>
 		
 		<script type="text/javascript">
-			var fotoNova = [];
+			var arrayFoto = [];
 			var novoId = 0;
   			var cont = 0;
+  			var produtoId = 0;
   			
-  			function postPut(id){
-  				alert(id);
+  			function gravarProduto(){
   				if (document.getElementById("preco").value != "") { 
   					document.getElementById("preco").value = document.getElementById("preco").value.replace(/\./g, '').replace(/,/g, '.');
 				} else {
 					document.getElementById("preco").value = "0";
 				}
   				
-  				if (id==0){	
+  				if (produtoId==0){	
   					$( "#formCadastro" ).submit(function( event ) {
   	  					event.preventDefault();
   						var formData = new FormData(this);
@@ -34,7 +34,7 @@
   						$.ajax({
   	  				    	url: "/lojadacuriosa/produto",
   	  				    	data: formData,
-  	  				    	type: "POST",
+  	  				    	type: 'POST',
   	  				        enctype: "multipart/form-data",
   	  				        contentType: false,
   	  				        processData: false,
@@ -42,7 +42,7 @@
   	  				        timeout: 600000,
   	  				        success: function (response) {
   	  				        	alert("Inclusão");
-  	  				        	$(window.document.location).attr("href","/lojadacuriosa/produto");
+  	  				        	$(window.document.location).attr("href","/lojadacuriosa/produtoNew");
   	  				        },
   	  				        error: function (exr, sender) {
   	  				        	alert("Erro ao carregar pagina");
@@ -55,11 +55,11 @@
   	  					event.preventDefault();
   	  					var formData = new FormData(this);
   	  					
-	  	  				formData.append("fotoNova", JSON.stringify(fotoNova));
+	  	  				formData.append("arrayFoto", JSON.stringify(arrayFoto));
 
   	  				    $.ajax({
+  	  				    	url: "/lojadacuriosa/produto/" + ProdutoId,
   	  				    	data: formData,
-  	  				        url: "/lojadacuriosa/produto/" + id,
   	  				    	method: 'POST',
   	  				        contentType: false,
   	  				        processData: false,
@@ -67,8 +67,8 @@
   	  				        timeout: 600000,
   	  				        success: function (response) {
   	  				        	alert("Alteração");
-  	  				        	$(window.document.location).attr("href","/lojadacuriosa/produto");
-  	  				        },
+  	  				        	$(window.document.location).attr("href","/lojadacuriosa/produtoNew");
+  	  				        },		
   	  				        error: function (exr, sender) {
   	  				        	alert("Erro ao carregar pagina");
   	  				        }
@@ -78,24 +78,39 @@
   			}
   			
   			function novoProduto(){
-  				produtoInclusaoAlteracao();
+  				$.ajax({
+				    url: "/lojadacuriosa/categoria",
+				    method: 'GET',
+				    success: function (response01, response02, response03) {		    	
+				    	var option = "<option  value=\"0\">Todas</option>";
+				       	$.each(response01, function (i, obj){
+				       		option += "<option value='"+obj.id+"'>"+obj.nome+"</option>";
+				       	})
+				       	$("#categoriaPrincipal").html(option);
+				       	$("#categoriaSecundaria").html(option);
+				    },
+				        error: function (erroResponse01, erroResponse02, erroResponse03) {
+				    }
+				});
+  				
+  				produtoId = 0;
+  				formularioProduto();
   				$("#botaoAdicionarAtualizar").val("Adicionar Produto");
-  				fotoNovaClear();
+  				arrayFotoResetar();
   			}
   			
   			function editarProduto(id){
   				$.ajax({
 				    url: "/lojadacuriosa/produtoNew/" + id,
 				    method: 'GET',
-				    success: function (response01, response02, response03) {
-				    	alert(JSON.stringify(response01[1]));
-				       	//alert(JSON.stringify(response02));
-				       	//alert(JSON.stringify(response03));
-				       	produtoInclusaoAlteracao();
-				       	fotoNovaClear();
+				    success: function (response01, response02, response03) {		    	
+				    	produtoId = response01[1]["id"];
+				    	formularioProduto();
+				       	arrayFotoResetar();
 				       	$("#botaoAdicionarAtualizar").val("Atualizar produto");
 				       	$("#nome").val(response01[1]["nome"]);
 				       	$("#preco").val(formataPreco(response01[1]["preco"]));
+				       	$("#descricao").val(response01[1]["descricao"]);
 				       	var option = "";
 				       	$.each(response01[0], function (i, obj){
 				       		option += "<option value='"+obj.id+"'>"+obj.nome+"</option>";
@@ -127,9 +142,9 @@
   			
   			function mostraFoto(idFile){  				
   				var id = idFile.id.split("_")[1];
-  				fotoNova[id] = idFile.files[0].name;
+  				arrayFoto[id] = idFile.files[0].name;
   				document.getElementById("imgId_" + id).src = window.URL.createObjectURL(idFile.files[0]);
-  				alert("Id: " + id + "\nNome: " + fotoNova[id]);
+  				alert("Id: " + id + "\nNome: " + arrayFoto[id]);
   			}
   			
   			function incluirFoto(nome){
@@ -156,7 +171,7 @@
   	  				
   	  				$(".buttonDel:last").prop("id", "buttonDelId_" + novoId);
   	  				
-	    			fotoNova[novoId] = nome;
+	    			arrayFoto[novoId] = nome;
 	
 	    			return novoId++;
   				}
@@ -167,21 +182,21 @@
   				var id = thisButton.id.split("_")[1];
   				alert(id);
   				$("#divId_" + id).remove();
-  				fotoNova[id] = null;
+  				arrayFoto[id] = null;
   			}
   			
-  			function fotoNovaClear(){
-  				$.each( fotoNova, function( key, value ) {
+  			function arrayFotoResetar(){
+  				$.each( arrayFoto, function( key, value ) {
   					$("#divId_" + key).remove();
   				});
   				cont = 0;
   				novoId= 0;
-  				while(fotoNova.length > 0){
-  					fotoNova.pop();
+  				while(arrayFoto.length > 0){
+  					arrayFoto.pop();
   				}
   			}
   			
-  			function produtoInclusaoAlteracao(){
+  			function formularioProduto(){
   				$("#fieldSetFormCadastro").prop("disabled", false);
   				$("#fieldSetFormCadastro").css("display", "");
   				
@@ -295,7 +310,7 @@
 				</fieldset>
 				
 				<fieldset id="fieldSetFormCadastro" style="display:none;" disabled>
-				<form id="formCadastro" enctype="multipart/form-data">
+				<form id="formCadastro" modelAttribute="produto" enctype="multipart/form-data">
           			<div class="tabela">
 						<table>
 							<tr>
@@ -303,20 +318,20 @@
 							</tr>
 							<tr>
 								<td class="atributo">Nome</td>
-								<td class="input"><input id="nome" type="text"></input></td>
+								<td class="input"><input id="nome" name="nome" type="text"></input></td>
 							</tr>
 							<tr>
 								<td class="atributo">Preço R$</td>
 								<td class="input">
-									<input id="preco" onKeyUp="mascaraMoeda(this)" type="text"></input>
+									<input id="preco" name="preco" onKeyUp="mascaraMoeda(this)" type="text"></input>
 								</td>
 							</tr>	
 						  	
 							<tr>
 								<td class="atributo">Categoria principal</td>
 								<td>					
-	               					<select id="categoriaPrincipal">       
-    	                    			<option  id="categoriaPrincipalOption" class="input"></option>
+	               					<select id="categoriaPrincipal" name="categoriaPrincipal.id">       
+    	                    			
             	        			</select>
             	        		</td>
 							</tr>
@@ -324,8 +339,8 @@
 							<tr>
 								<td class="atributo">Categoria secundaria</td>
 								<td>					
-	               					<select id="categoriaSecundaria">
-    	                    			<option id="categoriaSecundariaOption" class="input"></option>
+	               					<select id="categoriaSecundaria" name="categoriaSecundaria.id">
+    	                    			
             	        			</select>
             	        		</td>
 							</tr>
@@ -334,7 +349,7 @@
 								<td colspan="2">
 									Descrição (Máximo 200 letras)
 									<br />
-									<textarea id="descricao" class="input" maxlength="200" ></textarea>
+									<textarea id="descricao" name="descricao" class="input" maxlength="200" ></textarea>
 								</td>
 							</tr>
 							 
@@ -347,7 +362,7 @@
 							
 							<tr>
 								<td colspan="2">
-									<input type="submit" class="botao" value="" Onclick="postPut(${produto.id});" id="botaoAdicionarAtualizar" />
+									<input type="submit" class="botao" value="" Onclick="gravarProduto();" id="botaoAdicionarAtualizar" />
 									<input type="button" class="botao" value="Cancelar" Onclick="cancelar();" id="botaoCancelar" /> 	
 								</td>
 							</tr>

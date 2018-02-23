@@ -140,7 +140,7 @@
 			</section>
 			
 			<footer id="rodape">
-			<p>Copyright &copy; 2017 - <a href="produto">by</a> - <a href="produtoNew">byNew</a> Carlos Santana<br/>
+			<p>Copyright &copy; 2017 - <a href="produtoNew">byNew</a> Carlos Santana<br/>
 			<a href="mailto:carlos.esc@live.com">carlos.esc@live.com</a></p>
 			</footer>
 		</div>

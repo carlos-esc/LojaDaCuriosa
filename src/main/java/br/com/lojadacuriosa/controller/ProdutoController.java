@@ -38,31 +38,6 @@ public class ProdutoController {
 	@Autowired
 	private CategoriaService categoriaService;
 	
-	@GetMapping(value = "/produto")
-	public String getProdutos(Model model) {
-		List<Categoria> categorias = categoriaService.getTodasCategorias();
-		List<Produto> produtos = produtoService.getTodosProdutos();
-		model.addAttribute("produto", new Produto());
-		model.addAttribute("categorias", categorias);
-		model.addAttribute("produtos", produtos);
-		return "listaProduto";
-	}
-	
-	@GetMapping(value = "/produto/{id}")
-	public @ResponseBody List<Object> updateProduto(@PathVariable int id,Model model) throws JsonProcessingException {
-		model.addAttribute("categorias", this.categoriaService.getTodasCategorias());
-		model.addAttribute("produto", this.produtoService.getProduto(id));
-		model.addAttribute("produtos", this.produtoService.getTodosProdutos());
-		
-		List<Object> resultado = new ArrayList<>();
-		resultado.add(this.categoriaService.getTodasCategorias());
-		resultado.add(this.produtoService.getProduto(id));
-		resultado.add(this.produtoService.getTodosProdutos());
-		ObjectMapper mapper = new ObjectMapper();
-		System.out.println(mapper.writeValueAsString(resultado));
-	    return resultado;
-	}
-	
 	@GetMapping(value = "/produtoNew")
 	public String getProdutosNew(Model model) {
 		List<Categoria> categorias = categoriaService.getTodasCategorias();
@@ -88,12 +63,9 @@ public class ProdutoController {
 	public String addProduto(@ModelAttribute("produto") Produto produto,
 							@RequestParam("imagemUpload") MultipartFile[] listaUpload) throws Exception {
 		
-		if(produto.getCategoriaPrincipal().getId() == 0) produto.setCategoriaPrincipal(null);
-		if(produto.getCategoriaSecundaria().getId() == 0) produto.setCategoriaSecundaria(null);
-
 		produto.setFotos(new ArrayList<Foto>());
 		produtoService.addProduto(atualiza(produto, null, listaUpload));
-		return "redirect:/produto";
+		return "redirect:/produtoNew";
 	}
 	
 	@PostMapping(value = "/produto/{id}")
