@@ -45,7 +45,7 @@
   	  				        	$(window.document.location).attr("href","/lojadacuriosa/produtoNew");
   	  				        },
   	  				        error: function (exr, sender) {
-  	  				        	alert("Erro ao carregar pagina");
+  	  				        	alert("Erro ao carregar pagina NovoProduto");
   	  				        }
   	  				    });
   					});
@@ -58,9 +58,10 @@
 	  	  				formData.append("arrayFoto", JSON.stringify(arrayFoto));
 
   	  				    $.ajax({
-  	  				    	url: "/lojadacuriosa/produto/" + ProdutoId,
+  	  				    	url: "/lojadacuriosa/produto/" + produtoId,
   	  				    	data: formData,
   	  				    	method: 'POST',
+  	  				    	enctype: "multipart/form-data",
   	  				        contentType: false,
   	  				        processData: false,
   	  				        cache: false,
@@ -70,7 +71,7 @@
   	  				        	$(window.document.location).attr("href","/lojadacuriosa/produtoNew");
   	  				        },		
   	  				        error: function (exr, sender) {
-  	  				        	alert("Erro ao carregar pagina");
+  	  				        	alert("Erro ao carregar pagina AtualizaProduto");
   	  				        }
   	  				    });
   	  		  		});
@@ -111,17 +112,19 @@
 				       	$("#nome").val(response01[1]["nome"]);
 				       	$("#preco").val(formataPreco(response01[1]["preco"]));
 				       	$("#descricao").val(response01[1]["descricao"]);
-				       	var option = "";
+				       	var option = "<option  value=\"0\">Todas</option>";
 				       	$.each(response01[0], function (i, obj){
 				       		option += "<option value='"+obj.id+"'>"+obj.nome+"</option>";
 				       	})
-				       	$("#categoriaPrincipal").html("<option value='"+response01[1]["categoriaPrincipal"]["id"]+"'>"+response01[1]["categoriaPrincipal"]["nome"]+" (ATUAL)"+"</option>" + option);
-				       	$("#categoriaSecundaria").html("<option value='"+response01[1]["categoriaSecundaria"]["id"]+"'>"+response01[1]["categoriaSecundaria"]["nome"]+" (ATUAL)"+"</option>" + option);
+				       	$("#categoriaPrincipal").html(response01[1]["categoriaPrincipal"] != null ? "<option value='"+response01[1]["categoriaPrincipal"]["id"]+"'>"+response01[1]["categoriaPrincipal"]["nome"]+" (ATUAL)"+"</option>" + option : option);
+				       	$("#categoriaSecundaria").html(response01[1]["categoriaSecundaria"] != null ? "<option value='"+response01[1]["categoriaSecundaria"]["id"]+"'>"+response01[1]["categoriaSecundaria"]["nome"]+" (ATUAL)"+"</option>" + option : option);
 				       	$.each(response01[1]["fotos"], function (i, obj){
 				       		incluirFoto(obj.nome);
 				       	})
+				       	alert(produtoId);
 				    },
 				        error: function (erroResponse01, erroResponse02, erroResponse03) {
+				        	alert("erro");
 				    }
 				});
   			}
@@ -232,7 +235,7 @@
   
   			function formataPreco(preco) {	
   			    if (preco <= 0){
-  			    	return "";
+  			    	return "0";
   			    } else {
   			    	var strPreco = preco.toString();
   				    if (strPreco.indexOf(".") >= 0){
@@ -401,15 +404,15 @@
 					 
 					<c:forEach items="${produtos}" var="produto">
 						<tr id="produtoId_${produto.id}">
-    	        			<td>${produto.nome}</td>
+    	        			<td id="nomeId_${produto.id}">${produto.nome}</td>
     	        			
-    	        			<td class="tdPreco">
+    	        			<td id="precoId_${produto.id}">
     	        				<script>
-    	        	  				$(".tdPreco:last").text(formataPreco(${produto.preco}));
+    	        	  				$("#precoId_" + ${produto.id}).text(formataPreco(${produto.preco}));
     	        				</script>
     	        			</td>
 							
-    	        			<td>
+    	        			<td id="categoriaPrincipalId_${produto.id}">
     	        				<c:if test="${produto.categoriaPrincipal.nome == null}">
 										Todas
 								</c:if>
@@ -419,7 +422,8 @@
 								</c:if>
     	        				
     	        			</td>
-    	        			<td>
+    	        			
+    	        			<td id="categoriaSecundariaId_${produto.id}">
     	        				<c:if test="${produto.categoriaSecundaria.nome == null}">
 									Todas
 								</c:if>
@@ -428,12 +432,15 @@
 									${produto.categoriaSecundaria.nome}
 								</c:if>
     	        			</td>
-    	        			<td>${produto.descricao}</td>
-    	        			<td>
+    	        			
+    	        			<td id="descricaoId_${produto.id}">${produto.descricao}</td>
+    	        			
+    	        			<td id="fotosId_${produto.id}">
     	        				<c:forEach items="${produto.fotos}" var="fotos">
 	    	        				(${fotos.nome}) 
     	        				</c:forEach>
 	    	        		</td>    	        	
+	    	        		
 	    	        		<td>
 	    	        			<input type="button" value="Editar" class="botao" onClick="editarProduto(${produto.id});" />
 	    	        			<input type="button" value="Deletar" class="botao" onClick="deletarProduto(${produto.id});" />

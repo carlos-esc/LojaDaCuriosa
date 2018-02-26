@@ -63,21 +63,22 @@ public class ProdutoController {
 	public String addProduto(@ModelAttribute("produto") Produto produto,
 							@RequestParam("imagemUpload") MultipartFile[] listaUpload) throws Exception {
 		
+		if(produto.getCategoriaPrincipal().getId() == 0) produto.setCategoriaPrincipal(null);
+		if(produto.getCategoriaSecundaria().getId() == 0) produto.setCategoriaSecundaria(null);
 		produto.setFotos(new ArrayList<Foto>());
 		produtoService.addProduto(atualiza(produto, null, listaUpload));
 		return "redirect:/produtoNew";
 	}
 	
 	@PostMapping(value = "/produto/{id}")
-	public @ResponseBody String putProduto(@ModelAttribute("produto") Produto produto,
+	public String putProduto(@ModelAttribute("produto") Produto produto,
 							@RequestParam("imagemUpload") MultipartFile[] listaUpload,
-							@RequestParam("fotoNova") String fotoNova) throws Exception {
+							@RequestParam("arrayFoto") String arrayFoto) throws Exception {
 		
 		if(produto.getCategoriaPrincipal().getId() == 0) produto.setCategoriaPrincipal(null);
 		if(produto.getCategoriaSecundaria().getId() == 0) produto.setCategoriaSecundaria(null);
-		
-		produtoService.updateProduto(atualiza(produto, fotoNova, listaUpload));	
-		return "";
+		produtoService.updateProduto(atualiza(produto, arrayFoto, listaUpload));	
+		return "redirect:/produtoNew";
 	}
 	
 	@DeleteMapping(value = "/produto/{id}")
