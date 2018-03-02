@@ -19,6 +19,40 @@
   			var cont = 0;
   			var produtoId = 0;
   			
+  			
+  			function gravarProduto2(){
+  				
+  				$( "#formCadastro" ).submit(function( event ) {
+	  				event.preventDefault();
+					var formData = new FormData(this);
+					
+					if (document.getElementById("preco").value != "") { 
+	  					document.getElementById("preco").value = document.getElementById("preco").value.replace(/\./g, '').replace(/,/g, '.');
+					} else {
+						document.getElementById("preco").value = "0";
+					}					
+						
+						
+						$.ajax({
+	  				    	url: "/lojadacuriosa/produto",
+	  				    	data: formData,
+	  				    	type: 'POST',
+	  				        enctype: "multipart/form-data",
+	  				        contentType: false,
+	  				        processData: false,
+	  				        cache: false,
+	  				        timeout: 600000,
+	  				        success: function (response) {
+	  				        	alert("Inclusão");
+	  				        	$(window.document.location).attr("href","/lojadacuriosa/produtoNew");
+	  				        },
+	  				        error: function (exr, sender) {
+	  				        	alert("Erro ao carregar pagina NovoProduto");
+	  				        }
+	  				    });
+				});
+  			}
+  			
   			function gravarProduto(){
   				if (document.getElementById("preco").value != "") { 
   					document.getElementById("preco").value = document.getElementById("preco").value.replace(/\./g, '').replace(/,/g, '.');
@@ -30,7 +64,11 @@
   					$( "#formCadastro" ).submit(function( event ) {
   	  					event.preventDefault();
   						var formData = new FormData(this);
-  			  						
+  			  			
+  						
+  						
+  						
+  						
   						$.ajax({
   	  				    	url: "/lojadacuriosa/produto",
   	  				    	data: formData,
@@ -67,8 +105,18 @@
   	  				        cache: false,
   	  				        timeout: 600000,
   	  				        success: function (response) {
-  	  				        	alert("Alteração");
-  	  				        	$(window.document.location).attr("href","/lojadacuriosa/produtoNew");
+  	  				        	$("#nomeId_" + response["id"]).html(response["nome"]);
+  	  				        	$("#precoId_" + response["id"]).html(formataPreco(response["preco"]));
+  	  				        	$("#categoriaPrincipalId_" + response["id"]).html(response["categoriaPrincipal"]["nome"]);
+  	  				        	$("#categoriaSecundariaId_" + response["id"]).html(response["categoriaSecundaria"]["nome"]);
+  	  				        	$("#descricaoId_" + response["id"]).html(response["descricao"]);
+  	  				        	var option = "";
+  	  				        	$.each(response["fotos"], function (i, obj){
+  					       			option += "(" + obj.nome + ")";
+  					       		})  
+  					       		$("#fotosId_" + response["id"]).html(option);
+  	  				        	cancelar();
+  	  				        	
   	  				        },		
   	  				        error: function (exr, sender) {
   	  				        	alert("Erro ao carregar pagina AtualizaProduto");
@@ -76,6 +124,7 @@
   	  				    });
   	  		  		});
   				}
+  				alert("Fim do IF ELSE - produtoId: " + produtoId);
   			}
   			
   			function novoProduto(){
@@ -83,6 +132,7 @@
 				    url: "/lojadacuriosa/categoria",
 				    method: 'GET',
 				    success: function (response01, response02, response03) {		    	
+				    	produtoId = 0;
 				    	var option = "<option  value=\"0\">Todas</option>";
 				       	$.each(response01, function (i, obj){
 				       		option += "<option value='"+obj.id+"'>"+obj.nome+"</option>";
@@ -91,6 +141,7 @@
 				       	$("#categoriaSecundaria").html(option);
 				    },
 				        error: function (erroResponse01, erroResponse02, erroResponse03) {
+				        	alert("Erro ao carregar categorias...")
 				    }
 				});
   				
@@ -121,7 +172,6 @@
 				       	$.each(response01[1]["fotos"], function (i, obj){
 				       		incluirFoto(obj.nome);
 				       	})
-				       	alert(produtoId);
 				    },
 				        error: function (erroResponse01, erroResponse02, erroResponse03) {
 				        	alert("erro");
@@ -388,7 +438,7 @@
 		<section id="listaProdutos">
 		
 			<fieldset id="fieldSetListaProduto">
-				<table>
+				<table id="tabelaLista">
 					<tr>
 						<th colspan="7">Lista dos produtos cadastrados</th>
 					</tr>

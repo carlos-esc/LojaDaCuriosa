@@ -26,8 +26,8 @@ public class ProdutoService {
 	}
 	
 	@Transactional
-	public void addProduto (Produto produto) {
-		produtoDAO.addProduto(produto);
+	public Produto addProduto (Produto produto) {
+		return produtoDAO.addProduto(produto);
 	}
 	
 	@Transactional

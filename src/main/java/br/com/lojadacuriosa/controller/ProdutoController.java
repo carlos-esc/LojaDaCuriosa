@@ -60,25 +60,27 @@ public class ProdutoController {
 	}
 	
 	@PostMapping(value = "/produto")
-	public String addProduto(@ModelAttribute("produto") Produto produto,
+	public @ResponseBody Produto addProduto(@ModelAttribute("produto") Produto produto,
 							@RequestParam("imagemUpload") MultipartFile[] listaUpload) throws Exception {
 		
 		if(produto.getCategoriaPrincipal().getId() == 0) produto.setCategoriaPrincipal(null);
 		if(produto.getCategoriaSecundaria().getId() == 0) produto.setCategoriaSecundaria(null);
 		produto.setFotos(new ArrayList<Foto>());
-		produtoService.addProduto(atualiza(produto, null, listaUpload));
-		return "redirect:/produtoNew";
+		ObjectMapper mapper = new ObjectMapper();
+		System.out.println("Produto :" + mapper.writeValueAsString(produto));
+		//produtoService.addProduto(atualiza(produto, null, listaUpload));
+		return produtoService.addProduto(atualiza(produto, null, listaUpload));
 	}
 	
 	@PostMapping(value = "/produto/{id}")
-	public String putProduto(@ModelAttribute("produto") Produto produto,
+	public @ResponseBody Produto putProduto(@ModelAttribute("produto") Produto produto,
 							@RequestParam("imagemUpload") MultipartFile[] listaUpload,
 							@RequestParam("arrayFoto") String arrayFoto) throws Exception {
 		
 		if(produto.getCategoriaPrincipal().getId() == 0) produto.setCategoriaPrincipal(null);
 		if(produto.getCategoriaSecundaria().getId() == 0) produto.setCategoriaSecundaria(null);
-		produtoService.updateProduto(atualiza(produto, arrayFoto, listaUpload));	
-		return "redirect:/produtoNew";
+		produtoService.updateProduto(atualiza(produto, arrayFoto, listaUpload));
+		return produtoService.getProduto(produto.getId());
 	}
 	
 	@DeleteMapping(value = "/produto/{id}")
