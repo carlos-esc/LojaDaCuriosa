@@ -19,40 +19,6 @@
   			var cont = 0;
   			var produtoId = 0;
   			
-  			
-  			function gravarProduto2(){
-  				
-  				$( "#formCadastro" ).submit(function( event ) {
-	  				event.preventDefault();
-					var formData = new FormData(this);
-					
-					if (document.getElementById("preco").value != "") { 
-	  					document.getElementById("preco").value = document.getElementById("preco").value.replace(/\./g, '').replace(/,/g, '.');
-					} else {
-						document.getElementById("preco").value = "0";
-					}					
-						
-						
-						$.ajax({
-	  				    	url: "/lojadacuriosa/produto",
-	  				    	data: formData,
-	  				    	type: 'POST',
-	  				        enctype: "multipart/form-data",
-	  				        contentType: false,
-	  				        processData: false,
-	  				        cache: false,
-	  				        timeout: 600000,
-	  				        success: function (response) {
-	  				        	alert("Inclusão");
-	  				        	$(window.document.location).attr("href","/lojadacuriosa/produtoNew");
-	  				        },
-	  				        error: function (exr, sender) {
-	  				        	alert("Erro ao carregar pagina NovoProduto");
-	  				        }
-	  				    });
-				});
-  			}
-  			
   			function gravarProduto(){
   				if (document.getElementById("preco").value != "") { 
   					document.getElementById("preco").value = document.getElementById("preco").value.replace(/\./g, '').replace(/,/g, '.');
@@ -64,11 +30,7 @@
   					$( "#formCadastro" ).submit(function( event ) {
   	  					event.preventDefault();
   						var formData = new FormData(this);
-  			  			
-  						
-  						
-  						
-  						
+
   						$.ajax({
   	  				    	url: "/lojadacuriosa/produto",
   	  				    	data: formData,
@@ -91,9 +53,15 @@
   				} else {
   					$( "#formCadastro" ).submit(function( event ) {
   	  					event.preventDefault();
+  	  					
   	  					var formData = new FormData(this);
   	  					
-	  	  				formData.append("arrayFoto", JSON.stringify(arrayFoto));
+  	  					var valores = "";
+  	  					for(var pair of formData.entries()) {
+  	  				   		valores += '('+ pair[0]+ ': '+ pair[1]+') '; 
+  	  					}
+  	  					alert(valores);
+  	  					formData.append("arrayFoto", JSON.stringify(arrayFoto));
 
   	  				    $.ajax({
   	  				    	url: "/lojadacuriosa/produto/" + produtoId,
@@ -107,16 +75,15 @@
   	  				        success: function (response) {
   	  				        	$("#nomeId_" + response["id"]).html(response["nome"]);
   	  				        	$("#precoId_" + response["id"]).html(formataPreco(response["preco"]));
-  	  				        	$("#categoriaPrincipalId_" + response["id"]).html(response["categoriaPrincipal"]["nome"]);
-  	  				        	$("#categoriaSecundariaId_" + response["id"]).html(response["categoriaSecundaria"]["nome"]);
+  	  				        	$("#categoriaPrincipalId_" + response["id"]).html(response["categoriaPrincipal"] == null ? "Todas" : response["categoriaPrincipal"]["nome"]);
+  	  				        	$("#categoriaSecundariaId_" + response["id"]).html(response["categoriaSecundaria"] == null ? "Todas" : response["categoriaSecundaria"]["nome"]);
   	  				        	$("#descricaoId_" + response["id"]).html(response["descricao"]);
-  	  				        	var option = "";
+  	  				        	option = "";
   	  				        	$.each(response["fotos"], function (i, obj){
   					       			option += "(" + obj.nome + ")";
-  					       		})  
+  					       		});
   					       		$("#fotosId_" + response["id"]).html(option);
-  	  				        	cancelar();
-  	  				        	
+  					       		cancelar();
   	  				        },		
   	  				        error: function (exr, sender) {
   	  				        	alert("Erro ao carregar pagina AtualizaProduto");
@@ -124,16 +91,80 @@
   	  				    });
   	  		  		});
   				}
-  				alert("Fim do IF ELSE - produtoId: " + produtoId);
+  				return false;
+  			}
+  			
+  			function gravarProduto02(){
+  				if (document.getElementById("preco").value != "") { 
+  					document.getElementById("preco").value = document.getElementById("preco").value.replace(/\./g, '').replace(/,/g, '.');
+				} else {
+					document.getElementById("preco").value = "0";
+				}
+  				
+  				if (produtoId==0){	
+  					$( "#formCadastro" ).submit(function( event ) {
+  	  					event.preventDefault();
+  						formData = new FormData(this);
+
+  						$.ajax({
+  	  				    	url: "/lojadacuriosa/produto",
+  	  				    	data: formData,
+  	  				    	type: 'POST',
+  	  				        enctype: "multipart/form-data",
+  	  				        contentType: false,
+  	  				        processData: false,
+  	  				        cache: false,
+  	  				        timeout: 600000,
+  	  				        success: function (response) {
+  	  				        	alert("Inclusão");
+  	  				        	$(window.document.location).attr("href","/lojadacuriosa/produtoNew");
+  	  				        },
+  	  				        error: function (exr, sender) {
+  	  				        	alert("Erro ao carregar pagina NovoProduto");
+  	  				        }
+  	  				    });
+  					});
+  					   
+  				} else {
+  	  					var formData = new FormData(document.getElementById('formCadastro'));
+  	  					
+  	  					formData.append("arrayFoto", JSON.stringify(arrayFoto));
+
+  	  				    $.ajax({
+  	  				    	url: "/lojadacuriosa/produto/" + produtoId,
+  	  				    	data: formData,
+  	  				    	method: 'POST',
+  	  				    	enctype: "multipart/form-data",
+  	  				        contentType: false,
+  	  				        processData: false,
+  	  				        cache: false,
+  	  				        timeout: 600000,
+  	  				        success: function (response) {
+  	  				        	$("#nomeId_" + response["id"]).html(response["nome"]);
+  	  				        	$("#precoId_" + response["id"]).html(formataPreco(response["preco"]));
+  	  				        	$("#categoriaPrincipalId_" + response["id"]).html(response["categoriaPrincipal"] == null ? "Todas" : response["categoriaPrincipal"]["nome"]);
+  	  				        	$("#categoriaSecundariaId_" + response["id"]).html(response["categoriaSecundaria"] == null ? "Todas" : response["categoriaSecundaria"]["nome"]);
+  	  				        	$("#descricaoId_" + response["id"]).html(response["descricao"]);
+  	  				        	var option = "";
+  	  				        	$.each(response["fotos"], function (i, obj){
+  					       			option += "(" + obj.nome + ")";
+  					       		});
+  					       		$("#fotosId_" + response["id"]).html(option);
+  					       		cancelar();
+  	  				        },		
+  	  				        error: function (exr, sender) {
+  	  				        	alert("Erro ao carregar pagina AtualizaProduto");
+  	  				        }
+  	  				    });
+  				}
   			}
   			
   			function novoProduto(){
   				$.ajax({
 				    url: "/lojadacuriosa/categoria",
 				    method: 'GET',
-				    success: function (response01, response02, response03) {		    	
-				    	produtoId = 0;
-				    	var option = "<option  value=\"0\">Todas</option>";
+				    success: function (response01, response02, response03) {
+				    	option = "<option  value=\"0\">Todas</option>";
 				       	$.each(response01, function (i, obj){
 				       		option += "<option value='"+obj.id+"'>"+obj.nome+"</option>";
 				       	})
@@ -145,7 +176,6 @@
 				    }
 				});
   				
-  				produtoId = 0;
   				formularioProduto();
   				$("#botaoAdicionarAtualizar").val("Adicionar Produto");
   				arrayFotoResetar();
@@ -163,7 +193,7 @@
 				       	$("#nome").val(response01[1]["nome"]);
 				       	$("#preco").val(formataPreco(response01[1]["preco"]));
 				       	$("#descricao").val(response01[1]["descricao"]);
-				       	var option = "<option  value=\"0\">Todas</option>";
+				       	option = "<option  value=\"0\">Todas</option>";
 				       	$.each(response01[0], function (i, obj){
 				       		option += "<option value='"+obj.id+"'>"+obj.nome+"</option>";
 				       	})
@@ -197,7 +227,6 @@
   				var id = idFile.id.split("_")[1];
   				arrayFoto[id] = idFile.files[0].name;
   				document.getElementById("imgId_" + id).src = window.URL.createObjectURL(idFile.files[0]);
-  				alert("Id: " + id + "\nNome: " + arrayFoto[id]);
   			}
   			
   			function incluirFoto(nome){
@@ -416,7 +445,8 @@
 							<tr>
 								<td colspan="2">
 									<input type="submit" class="botao" value="" Onclick="gravarProduto();" id="botaoAdicionarAtualizar" />
-									<input type="button" class="botao" value="Cancelar" Onclick="cancelar();" id="botaoCancelar" /> 	
+									<input type="button" class="botao" value="Cancelar" Onclick="cancelar();" id="botaoCancelar" />
+									<input type="button" class="botao" value="Ajax" Onclick="gravarProduto02();" id="botaoAjax" />
 								</td>
 							</tr>
 						</table>
