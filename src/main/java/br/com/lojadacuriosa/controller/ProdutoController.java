@@ -66,10 +66,8 @@ public class ProdutoController {
 		if(produto.getCategoriaPrincipal().getId() == 0) produto.setCategoriaPrincipal(null);
 		if(produto.getCategoriaSecundaria().getId() == 0) produto.setCategoriaSecundaria(null);
 		produto.setFotos(new ArrayList<Foto>());
-		ObjectMapper mapper = new ObjectMapper();
-		System.out.println("Produto :" + mapper.writeValueAsString(produto));
-		//produtoService.addProduto(atualiza(produto, null, listaUpload));
-		return produtoService.addProduto(atualiza(produto, null, listaUpload));
+		produtoService.addProduto(atualiza(produto, null, listaUpload));
+		return produtoService.getProduto(produto.getId());
 	}
 	
 	@PostMapping(value = "/produto/{id}")

@@ -18,19 +18,13 @@
 			var novoId = 0;
   			var cont = 0;
   			var produtoId = 0;
-  			
+  			  			
   			function gravarProduto(){
-  				if (document.getElementById("preco").value != "") { 
-  					document.getElementById("preco").value = document.getElementById("preco").value.replace(/\./g, '').replace(/,/g, '.');
-				} else {
-					document.getElementById("preco").value = "0";
-				}
+  				var formData = new FormData(document.getElementById("formCadastro"));
+				formData.set("preco" , formData.get("preco") != "" ? formData.get("preco").replace(/\./g, '').replace(/,/g, '.') : 0);
+  				formData.append("arrayFoto", JSON.stringify(arrayFoto));
   				
-  				if (produtoId==0){	
-  					$( "#formCadastro" ).submit(function( event ) {
-  	  					event.preventDefault();
-  						var formData = new FormData(this);
-
+  				if (produtoId==0){
   						$.ajax({
   	  				    	url: "/lojadacuriosa/produto",
   	  				    	data: formData,
@@ -41,95 +35,33 @@
   	  				        cache: false,
   	  				        timeout: 600000,
   	  				        success: function (response) {
+  	  				        	var option = "";
+	  				        	$.each(response["fotos"], function (i, obj){
+					       			option += "(" + obj.nome + ")";
+					       		});
+  	  				        	
+	  				        	$("#tabelaLista").append("<tr id='produtoId_" + response["id"] + "'>" +
+  	  				        									"<td id='nomeId_" + response["id"] + "'>" + response["nome"] + "</td>" +
+  	  				        									"<td id='precoId_" + response["id"] + "'>" + formataPreco(response["preco"]) + "</td>" +
+  	  				        									"<td id='categoriaPrincipalId_" + response["id"] + "'>" + response["categoriaPrincipal"]["nome"] + "</td>" +
+  	  				        									"<td id='categoriaSecundariaId_" + response["id"] + "'>" + response["categoriaSecundaria"]["nome"] + "</td>" +
+  	  				        									"<td id='descricaoId_" + response["id"] + "'>" + response["descricao"] + "</td>" +
+  	  				        									"<td id='fotosId_" + response["id"] + "'>" + option + "</td>" +		
+  	  				        									"<td>" + 
+  	  				        										"<input type='button' value='Editar' class='botao' onClick='editarProduto(" + response["id"] + ")' />" + 
+  	  				        	    	        					"<input type='button' value='Deletar' class='botao' onClick='deletarProduto(" + response["id"] + ")' />" +
+  	  				        									"</td>" +
+  	  				        							"</tr>");
+  	  				        	cancelar();
   	  				        	alert("Inclusão");
-  	  				        	$(window.document.location).attr("href","/lojadacuriosa/produtoNew");
+  	  				        	
+  	  				        	//$(window.document.location).attr("href","/lojadacuriosa/produtoNew");
   	  				        },
   	  				        error: function (exr, sender) {
   	  				        	alert("Erro ao carregar pagina NovoProduto");
   	  				        }
   	  				    });
-  					});
-  					   
   				} else {
-  					$( "#formCadastro" ).submit(function( event ) {
-  	  					event.preventDefault();
-  	  					
-  	  					var formData = new FormData(this);
-  	  					
-  	  					var valores = "";
-  	  					for(var pair of formData.entries()) {
-  	  				   		valores += '('+ pair[0]+ ': '+ pair[1]+') '; 
-  	  					}
-  	  					alert(valores);
-  	  					formData.append("arrayFoto", JSON.stringify(arrayFoto));
-
-  	  				    $.ajax({
-  	  				    	url: "/lojadacuriosa/produto/" + produtoId,
-  	  				    	data: formData,
-  	  				    	method: 'POST',
-  	  				    	enctype: "multipart/form-data",
-  	  				        contentType: false,
-  	  				        processData: false,
-  	  				        cache: false,
-  	  				        timeout: 600000,
-  	  				        success: function (response) {
-  	  				        	$("#nomeId_" + response["id"]).html(response["nome"]);
-  	  				        	$("#precoId_" + response["id"]).html(formataPreco(response["preco"]));
-  	  				        	$("#categoriaPrincipalId_" + response["id"]).html(response["categoriaPrincipal"] == null ? "Todas" : response["categoriaPrincipal"]["nome"]);
-  	  				        	$("#categoriaSecundariaId_" + response["id"]).html(response["categoriaSecundaria"] == null ? "Todas" : response["categoriaSecundaria"]["nome"]);
-  	  				        	$("#descricaoId_" + response["id"]).html(response["descricao"]);
-  	  				        	option = "";
-  	  				        	$.each(response["fotos"], function (i, obj){
-  					       			option += "(" + obj.nome + ")";
-  					       		});
-  					       		$("#fotosId_" + response["id"]).html(option);
-  					       		cancelar();
-  	  				        },		
-  	  				        error: function (exr, sender) {
-  	  				        	alert("Erro ao carregar pagina AtualizaProduto");
-  	  				        }
-  	  				    });
-  	  		  		});
-  				}
-  				return false;
-  			}
-  			
-  			function gravarProduto02(){
-  				if (document.getElementById("preco").value != "") { 
-  					document.getElementById("preco").value = document.getElementById("preco").value.replace(/\./g, '').replace(/,/g, '.');
-				} else {
-					document.getElementById("preco").value = "0";
-				}
-  				
-  				if (produtoId==0){	
-  					$( "#formCadastro" ).submit(function( event ) {
-  	  					event.preventDefault();
-  						formData = new FormData(this);
-
-  						$.ajax({
-  	  				    	url: "/lojadacuriosa/produto",
-  	  				    	data: formData,
-  	  				    	type: 'POST',
-  	  				        enctype: "multipart/form-data",
-  	  				        contentType: false,
-  	  				        processData: false,
-  	  				        cache: false,
-  	  				        timeout: 600000,
-  	  				        success: function (response) {
-  	  				        	alert("Inclusão");
-  	  				        	$(window.document.location).attr("href","/lojadacuriosa/produtoNew");
-  	  				        },
-  	  				        error: function (exr, sender) {
-  	  				        	alert("Erro ao carregar pagina NovoProduto");
-  	  				        }
-  	  				    });
-  					});
-  					   
-  				} else {
-  	  					var formData = new FormData(document.getElementById('formCadastro'));
-  	  					
-  	  					formData.append("arrayFoto", JSON.stringify(arrayFoto));
-
   	  				    $.ajax({
   	  				    	url: "/lojadacuriosa/produto/" + produtoId,
   	  				    	data: formData,
@@ -175,7 +107,7 @@
 				        	alert("Erro ao carregar categorias...")
 				    }
 				});
-  				
+  				produtoId = 0;
   				formularioProduto();
   				$("#botaoAdicionarAtualizar").val("Adicionar Produto");
   				arrayFotoResetar();
@@ -444,9 +376,8 @@
 							
 							<tr>
 								<td colspan="2">
-									<input type="submit" class="botao" value="" Onclick="gravarProduto();" id="botaoAdicionarAtualizar" />
+									<input type="button" class="botao" value="" Onclick="gravarProduto();" id="botaoAdicionarAtualizar" />
 									<input type="button" class="botao" value="Cancelar" Onclick="cancelar();" id="botaoCancelar" />
-									<input type="button" class="botao" value="Ajax" Onclick="gravarProduto02();" id="botaoAjax" />
 								</td>
 							</tr>
 						</table>
